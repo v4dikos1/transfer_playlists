@@ -1,14 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include 'inc/_nav.html' %}
+{% endblock %}
+
+{% block title %}
+    Перенос плейлистов
+{% endblock %}
+
+{% block content %}
+    <body>
     {% for track in tracks %}
         <div>
-            {{ track.name }} ---- {{ track.artist }} ---- {{ track.album }} ---- {{ track.duration }}
+            {{ track }}
         </div>
     {% endfor %}
-</body>
-</html>
+
+    <a class="nav-link " aria-current="page" href="{% url 'transfer_playlist' %}">Перенести треки</a>
+
+    </body>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include 'inc/_nav.html' %}
+{% endblock %}
+
+{% block title %}
+    Перенос плейлистов
+{% endblock %}
+
+{% block content %}
+    <a class="nav-link " aria-current="page" href="{% url 'playlists' %}">Начать перенос</a>
+{% endblock %}
