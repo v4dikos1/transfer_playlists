@@ -7,7 +7,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from ytmusicapi import YTMusic
 
-from .vars import client_secret, client_id, redirect_uri
+from transfer.vars import client_id, redirect_uri, client_secret
 
 path = os.path.dirname(os.path.realpath(__file__)) + os.sep
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
@@ -171,7 +171,7 @@ class Spotify:
 
 class YoutubeMusic:
     def __init__(self):
-        self.yt_music = YTMusic('headers_auth.json')
+        self.yt_music = YTMusic('transfer/headers_auth.json')
 
     def create_playlist(self, name, info, privacy="PRIVATE"):
         return self.yt_music.create_playlist(name, info, privacy)
