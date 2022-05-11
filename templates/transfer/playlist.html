@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for track in tracks %}
+        <div>
+            {{ track.name }} ---- {{ track.artist }} ---- {{ track.album }} ---- {{ track.duration }}
+        </div>
+    {% endfor %}
+</body>
+</html>

@@ -7,7 +7,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from ytmusicapi import YTMusic
 
-from vars import client_secret, client_id, redirect_uri
+from .vars import client_secret, client_id, redirect_uri
 
 path = os.path.dirname(os.path.realpath(__file__)) + os.sep
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]

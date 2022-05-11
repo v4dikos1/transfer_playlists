@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'transfer.apps.TransferConfig'
 ]
 
 MIDDLEWARE = [
