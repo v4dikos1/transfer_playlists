@@ -36,14 +36,22 @@
                 <div class="playlists">
                     {% for playlist in playlists %}
                         <label class="playlist-item" id="{{ playlist.id }}">
+                            <div class="image default">
+                                <img src="{{ playlist.img }}" alt="">
+                            </div>
+                            <p class="text">{{ playlist.name }}</p>
                             <input type="radio" class="radio__input" name="radio__input">
                             <span class="radio"></span>
-                            <img class="image" src="{{ playlist.img }}" alt="">
-                            <p class="text">{{ playlist.name }}</p>
                         </label>
                     {% endfor %}
                 </div>
             </div>
+            {% csrf_token %}
+            {% if yt_auth %}
+                <button class="send__playlist">Выбрать плейлист</button>
+            {% else %}
+                <div>Войдите в ютуб</div>
+            {% endif %}
         {% else %}
             <div class="before-login">
                 <div class="content">
@@ -53,8 +61,7 @@
                 </div>
             </div>
         {% endif %}
-        {% csrf_token %}
-        <button class="send__playlist">Выбрать плейлист</button>
+        
         
     </main>
 </div>

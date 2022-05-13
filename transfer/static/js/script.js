@@ -20,7 +20,6 @@ list_radio.forEach(item => {
 });
 
 send_playlist.addEventListener('click', () => {
-    //stringJSON = JSON.stringify(playlist);
     let csrf = $("input[name=csrfmiddlewaretoken]").val();
     
     $.ajax({
@@ -64,6 +63,8 @@ first_checkbox.addEventListener('click', () => {
             add_track_in_list(item);
         });
     }
+    count = tracks.length;
+    main_button.textContent = 'Выбрать треки (count)'
 });
 
 function add_track_in_list(item) {
