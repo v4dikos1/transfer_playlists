@@ -187,8 +187,6 @@ p {
     background-color: #07192E;
     background: url(/media/tick.svg) center no-repeat;
 }
-
-
 /* checkbox */
 
 .main__button, .send__playlist {
@@ -205,7 +203,7 @@ p {
     transition: ease 0.15s;
 }
 
-.main__button:hover, send {
+.main__button:hover, .send__playlist {
     background-color: #222b7a;
     cursor: pointer;
 }
