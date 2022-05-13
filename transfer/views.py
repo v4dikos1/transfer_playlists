@@ -1,8 +1,11 @@
 import json
 
-from django.http import JsonResponse
+from django.db.models.functions import window
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import ListView
 
 from users.models import CustomUser
 from .utils import Spotify, YoutubeMusic
@@ -55,16 +58,21 @@ class LoginView(View):
 class TracksView(View):
     template_name = 'transfer/main.html'
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         spotify = Spotify()
         username, token = get_spotify_user()
+
         spotify.auth_with_token(username, token)
 
         playlist = self.kwargs['playlist_id']
 
-        return render(request, self.template_name, {'auth': auth,
-                                                    'yt_auth': yt_auth,
-                                                    'tracks': playlist['tracks']})
+        playlist = spotify.get_spotify_playlist(playlist)
+
+        result = render(request, self.template_name, {'auth': auth,
+                                                      'yt_auth': yt_auth,
+                                                      'tracks': playlist['tracks']})
+
+        return result
 
 
 def transfer_playlist(request):
@@ -90,7 +98,7 @@ def get_playlists(request):
     if request.method == 'POST':
         playlist = request.POST.get('stringJSON')
 
-        return redirect('songs', kwargs={'playlist_id': playlist})
+        return HttpResponseRedirect(reverse_lazy('songs', kwargs={'playlist_id': playlist}), status=200)
 
 
 def get_songs(request):

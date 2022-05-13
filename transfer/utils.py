@@ -42,11 +42,11 @@ class Spotify:
 
         return results
 
-    def get_spotify_playlist(self, url):
-        url_parts = url.split('/')
-        playlist_id = url_parts[4].split('?')[0]
-        if len(playlist_id) != 22:
-            raise Exception('Bad playlist id: ' + playlist_id)
+    def get_spotify_playlist(self, playlist_id):
+        # url_parts = url.split('/')
+        # playlist_id = url_parts[4].split('?')[0]
+        # if len(playlist_id) != 22:
+        #     raise Exception('Bad playlist id: ' + playlist_id)
 
         results = self.sp.playlist(playlist_id)
         name = results['name']
