@@ -11,5 +11,5 @@ urlpatterns = [
     path('transfer/', transfer_playlist, name='transfer_playlist'),
     path('get-songs/', get_songs, name='get_songs'),
     path('get-playlists/', get_playlists, name='get_playlists'),
-    path('songs/', TracksView.as_view(), name='songs')
+    path('songs/<str:playlist_id>/', TracksView.as_view(), name='songs')
 ]
