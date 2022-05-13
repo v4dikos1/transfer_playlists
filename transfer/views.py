@@ -19,7 +19,7 @@ class HomeView(View):
 
 
 class PlaylistsView(View):
-    template_name = 'transfer/playlist.html'
+    template_name = 'transfer/main.html'
 
     def get(self, request):
         spotify = Spotify()
