@@ -60,7 +60,7 @@ class TracksView(View):
         username, token = get_spotify_user()
         spotify.auth_with_token(username, token)
 
-        playlist = spotify.get_spotify_playlist(request.GET.get('playlist_id'))
+        playlist = self.kwargs['playlist_id']
 
         return render(request, self.template_name, {'auth': auth,
                                                     'yt_auth': yt_auth,
@@ -89,9 +89,8 @@ def transfer_playlist(request):
 def get_playlists(request):
     if request.method == 'POST':
         playlist = request.POST.get('stringJSON')
-        print(playlist)
 
-        return redirect('playlists', {'playlist_id': playlist})
+        return redirect('songs', kwargs={'playlist_id': playlist})
 
 
 def get_songs(request):
