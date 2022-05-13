@@ -20,7 +20,6 @@ list_radio.forEach(item => {
 });
 
 send_playlist.addEventListener('click', () => {
-    //stringJSON = JSON.stringify(playlist);
     let csrf = $("input[name=csrfmiddlewaretoken]").val();
     
     $.ajax({
@@ -57,17 +56,15 @@ main_button.addEventListener('click', () => {
 });
 
 first_checkbox.addEventListener('click', () => {
+    tracks = []
     if (first_checkbox.checked) {
         list_checkboxes.forEach(item => {
             item.checked = true;
             add_track_in_list(item);
         });
-    } else {
-        list_checkboxes.forEach(item => {
-            item.checked = false;
-            add_track_in_list(item);
-        });
     }
+    count = tracks.length;
+    main_button.textContent = 'Выбрать треки (count)'
 });
 
 function add_track_in_list(item) {

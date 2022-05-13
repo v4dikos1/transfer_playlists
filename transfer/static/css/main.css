@@ -141,7 +141,7 @@ p {
 }
 
 /* Checkbox */
-.checkbox__input {
+.checkbox__input, .radio__input {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -189,7 +189,7 @@ p {
 }
 /* checkbox */
 
-.main__button, .send__playlist {
+.main__button{
     font: inherit;
     height: 60px;
     width: 100vw;
@@ -203,7 +203,7 @@ p {
     transition: ease 0.15s;
 }
 
-.main__button:hover, .send__playlist {
+.main__button:hover {
     background-color: #222b7a;
     cursor: pointer;
 }
@@ -231,6 +231,32 @@ p {
     position: relative;
     cursor: pointer;
 }
+.image {
+    display: inline-block;
+	position: relative;    
+	line-height: 0;
+    width: 280px;
+    height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.image img {
+    width: 100%;
+    height: 100%;
+}
+.default:after {
+	content: "";
+	display: block;    
+	width: 100%;
+	height: 100%;    
+	position: absolute;
+	top: 0;      
+	left: 0;   
+	background: transparent;
+	background-color: #0C2541;
+	opacity: 0.65;
+}
+
 .playlist-item p {
     text-align: center;
     margin-top: 16px;
@@ -246,16 +272,11 @@ p {
     min-width: 24px;
     min-height: 24px;
     border-radius: 50%;
-    border: 0.13em solid #1ED760;
+    border: 0.13em solid #a3dab6;
 }
 .radio__input:hover + .radio {
     border-color: #a3dab6;
 }
 .radio__input:checked + .radio {
-    background: url(/media/Ellipse.svg) center no-repeat;
-}
-.image {
-    width: 280px;
-    height: 280px;
-    border-radius: 20px;
+    background: url(/media/tick.svg) center no-repeat;
 }
