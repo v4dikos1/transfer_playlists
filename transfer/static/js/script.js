@@ -1,10 +1,44 @@
 let list_checkboxes = document.querySelectorAll('.checkbox__input.secondary'),
     first_checkbox = document.querySelector('.checkbox__input.primary'),
-    main_button = document.querySelector('.main__button');
+    main_button = document.querySelector('.main__button'),
+    list_radio = document.querySelectorAll('.radio__input'),
+    send_playlist = document.querySelector('.send__playlist');
 
 let tracks = [],
-    track = {};
+    track = {},
+    playlist = {};
 
+list_radio.forEach(item => {
+    item.addEventListener('click', () => {
+        let parent = item.parentElement,
+            children = parent.children;
+        
+        if(item.checked) {
+            playlist = {
+                name: children[3].textContent,
+                id: parent.id
+            };
+        }
+    });
+});
+send_playlist.addEventListener('click', () => {
+    stringJSON = JSON.stringify(playlist);
+    let csrf = $("input[name=csrfmiddlewaretoken]").val();
+    
+    $.ajax({
+        data: {stringJSON: stringJSON,
+                csrfmiddlewaretoken: csrf},
+        dataType: 'json',
+        type: 'POST',
+        url: '/get-songs/',
+        success: function(response) {
+            alert('Успех');
+        },
+        error: function(response) {
+            alert('Неудача');
+        }
+    });
+});
 
 main_button.addEventListener('click', () => {
     stringJSON = JSON.stringify(tracks);
