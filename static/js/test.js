@@ -22,27 +22,25 @@ tracks = [
 ];
 
 button.addEventListener('click', () => {
-    stringJSON = JSON.stringify(tracks);
+    let stringJSON = JSON.stringify(tracks);
+    let csrf = $("input[name=csrfmiddlewaretoken]").val();
 
-    const request = new XMLHttpRequest();
+    $.ajax({
+        data: {stringJSON: stringJSON,
+                csrfmiddlewaretoken: csrf},
+        dataType: 'json',
+        type: 'POST',
+        url: '/get-songs/',
+        success: function (response){
+            alert('Успех')
+                  },
+        error: function (response){
+            alert('Неудача')
+                  }
 
-    // сообщаем соединению, что отправляем данные методом POST в конкретный python файл относительо HTML
-    request.open('POST', '');
-
-    // создаём настройку, что соединение будет принимать или передавать строку JSON
-    request.setRequestHeader('Content-type', 'application/json');
-
-    // отправляем данные (можно поместить любой строковый тип)
-    request.send(stringJSON);
-
-    // смотрим статус отправки данных на сервер
-    request.addEventListener('readystatechange', () => {
-        if (request.readyState === 4 && request.status === 200) {
-            console.log('Я отправил данные, принимай их у себя');
-        } else {
-            console.log('Что-то не так...');
-        }
     });
-    
+    return false;
+
 });
+
 

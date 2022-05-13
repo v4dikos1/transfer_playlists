@@ -33,7 +33,7 @@ class PlaylistsView(View):
 
 
 class LoginView(View):
-    template_name = 'transfer/login.html'
+    template_name = 'transfer/main.html'
 
     def get(self, request):
 

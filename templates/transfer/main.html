@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header__row">
+                    <p class="logo">Link.Audio</p>
+                    <div class="linked__services">
+                        <div class="service__item active-service spotify">
+                            <img src="/media/spotify.svg" alt="" class="service-logo">
+                        </div>
+                        <div class="arrow">
+                            <img src="/media/arrow-right.svg" alt="" class="arrow">
+                        </div>
+                        
+                        <div class="service__item active-service youtube">
+                            <img src="/media/youtube.svg" alt="" class="service-logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="main">
+            {% if auth %}
+                <div class="before-login">
+                    <div class="content">
+                        <img src="/media/nothing.svg" alt="">
+                        <p class="text">Пока здесь ничего нет. Войдите в аккаунты Spotify и YouTube, 
+                                        чтобы увидеть доступные треки для переноса</p>
+                    </div>
+                </div>
+            {% else %}
+            <div class="label__row">
+                <div class="container">
+                    <label class="labels">
+                        <input type="checkbox" class="checkbox__input primary">
+                        <span class="checkbox primary"></span>
+                        <p class="label name">Название</p>
+                        <p class="label author">Автор</p>
+                        <p class="label album">Альбом</p>
+                        <p class="label duration">Длительность</p>
+                    </label>
+                </div>
+            </div>
+            <div class="tracks">
+                {% for track in tracks %}
+                    <div class="track__row default">
+                        <div class="container">
+                            <label class="track">
+                                <input type="checkbox" class="checkbox__input secondary">
+                                <span class="checkbox secondary"></span>
+                                <p class="track name">{{track.name}}</p>
+                                <p class="track author">{{track.artist}}</p>
+                                <p class="track album">{{track.album}}</p>
+                                <p class="track duration">{{track.duration}}</p>
+                            </label>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                {% csrf_token %}
+                <button class="main__button">Перенести треки (24)</button>
+            {% endif %} 
+        </main>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
