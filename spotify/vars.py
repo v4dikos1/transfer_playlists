@@ -1,4 +1,0 @@
-CLIENT_ID = '125a2f896fd64009a947d88e3c0da521'
-CLIENT_SECRET = '1620b2ac0dae4d92bfdcd2a5e43fa69c'
-REDIRECT_URI = 'http://127.0.0.1:8080/'
-token = 'BQC6wfEGIXY_7_2UIecCsgx6nredOx1A4jkiv8_JN'
