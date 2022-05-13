@@ -1,12 +1,9 @@
-import json
-
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import ListView
+
 from users.models import CustomUser
 from .utils import Spotify, YoutubeMusic
-import spotipy
 
 auth = ''
 
@@ -36,8 +33,20 @@ class LoginView(View):
     template_name = 'transfer/main.html'
 
     def get(self, request):
+        if auth != '':
+            spotify = Spotify()
+            username, token = get_spotify_user()
+            spotify.auth_with_token(username, token)
 
-        return render(request, self.template_name, {'auth': auth})
+            playlist = spotify.get_spotify_playlist(
+                'https://open.spotify.com/playlist/37i9dQZF1DWWmsWPbM2pKT?si=383e81e2361343cd')
+
+            return render(request, self.template_name, {'auth': auth,
+                                                        'tracks': playlist['tracks']})
+
+        else:
+            return render(request, self.template_name, {'auth': auth
+                                                        })
 
 
 def spotify_login(request):
@@ -45,6 +54,7 @@ def spotify_login(request):
 
     spotify = Spotify()
     spotify.auth()
+    print(spotify.username)
 
     try:
         user = CustomUser.objects.get(username=spotify.username, token=spotify.token)
