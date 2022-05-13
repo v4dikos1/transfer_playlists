@@ -98,7 +98,12 @@ class Spotify:
         if user == '':
             user = self.username
 
-        pl = self.sp.user_playlists(user)['items']
+        pl = []
+        # print(self.sp.user_playlists(user))
+        for i in range(self.sp.user_playlists(user)['total']):
+            pl.append({'name': self.sp.user_playlists(user)['items'][i]['name'],
+                       'id': self.sp.user_playlists(user)['items'][i]['id'],
+                       'img': self.sp.user_playlists(user)['items'][i]['images'][0]['url']})
 
         return pl
 

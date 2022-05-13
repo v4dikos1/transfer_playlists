@@ -33,7 +33,7 @@ class PlaylistsView(View):
 
 
 class LoginView(View):
-    template_name = 'transfer/main.html'
+    template_name = 'transfer/home.html'
 
     def get(self, request):
         if auth != '':
@@ -41,16 +41,31 @@ class LoginView(View):
             username, token = get_spotify_user()
             spotify.auth_with_token(username, token)
 
-            playlist = spotify.get_spotify_playlist(
-                'https://open.spotify.com/playlist/37i9dQZF1DWWmsWPbM2pKT?si=383e81e2361343cd')
+            playlists = spotify.get_user_playlists(username)
 
             return render(request, self.template_name, {'auth': auth,
                                                         'yt_auth': yt_auth,
-                                                        'tracks': playlist['tracks']})
+                                                        'playlists': playlists})
 
         else:
             return render(request, self.template_name, {'auth': auth
                                                         })
+
+
+class TracksView(View):
+    template_name = 'transfer/main.html'
+
+    def get(self, request):
+        spotify = Spotify()
+        username, token = get_spotify_user()
+        spotify.auth_with_token(username, token)
+
+        playlist = spotify.get_spotify_playlist(request.GET.get('playlist_id'))
+
+        return render(request, self.template_name, {'auth': auth,
+                                                    'yt_auth': yt_auth,
+                                                    'tracks': playlist['tracks']})
+
 
 def transfer_playlist(request):
     spotify = Spotify()
@@ -69,6 +84,14 @@ def transfer_playlist(request):
 
     else:
         return redirect('login')
+
+
+def get_playlists(request):
+    if request.method == 'POST':
+        playlist = request.POST.get('stringJSON')
+        print(playlist)
+
+        return redirect('playlists', {'playlist_id': playlist})
 
 
 def get_songs(request):

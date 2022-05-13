@@ -6,7 +6,7 @@ let list_checkboxes = document.querySelectorAll('.checkbox__input.secondary'),
 
 let tracks = [],
     track = {},
-    playlist = {};
+    playlist = 0;
 
 list_radio.forEach(item => {
     item.addEventListener('click', () => {
@@ -14,23 +14,20 @@ list_radio.forEach(item => {
             children = parent.children;
         
         if(item.checked) {
-            playlist = {
-                name: children[3].textContent,
-                id: parent.id
-            };
+            playlist = parent.id;
         }
     });
 });
+
 send_playlist.addEventListener('click', () => {
-    stringJSON = JSON.stringify(playlist);
+    //stringJSON = JSON.stringify(playlist);
     let csrf = $("input[name=csrfmiddlewaretoken]").val();
     
     $.ajax({
-        data: {stringJSON: stringJSON,
+        data: {stringJSON: playlist,
                 csrfmiddlewaretoken: csrf},
-        dataType: 'json',
         type: 'POST',
-        url: '/get-songs/',
+        url: '/get-playlists/',
         success: function(response) {
             alert('Успех');
         },
