@@ -8,13 +8,16 @@ let tracks = [],
 
 main_button.addEventListener('click', () => {
     stringJSON = JSON.stringify(tracks);
+    let csrf = $("input[name=csrfmiddlewaretoken]").val();
     
     $.ajax({
-        data: stringJSON,
-        dataType: 'POST',
-        url: 'get-songs/',
+        data: {stringJSON: stringJSON,
+                csrfmiddlewaretoken: csrf},
+        dataType: 'json',
+        type: 'POST',
+        url: '/get-songs/',
         success: function(response) {
-            alert('Усапех');
+            alert('Успех');
         },
         error: function(response) {
             alert('Неудача');
