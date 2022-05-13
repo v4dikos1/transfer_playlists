@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -54,7 +56,6 @@ def spotify_login(request):
 
     spotify = Spotify()
     spotify.auth()
-    print(spotify.username)
 
     try:
         user = CustomUser.objects.get(username=spotify.username, token=spotify.token)
@@ -102,12 +103,20 @@ def get_spotify_user():
 
 
 def get_songs(request):
-    print('test')
     if request.method == 'POST':
-        print('test')
-        answer = request.POST.get('stringJSON')
-        print(f'Ответ {answer}')
+        playlist = json.loads(request.POST.get('stringJSON'))
 
-        return JsonResponse({'data': answer}, status=200)
+        spotify = Spotify()
+        yt = YoutubeMusic()
+
+        username, token = get_spotify_user()
+        spotify.auth_with_token(username, token)
+
+        if spotify is not None:
+            tracks = yt.search_songs(playlist)
+            yt_playlist_id = yt.create_playlist('Retrowave', 'Transfer from Spotify', 'PUBLIC')
+            yt.add_playlist_items(yt_playlist_id, tracks)
+
+        return JsonResponse({'data': playlist}, status=200)
 
     return redirect('home')

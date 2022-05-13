@@ -208,10 +208,10 @@ x-youtube-client-version: 1.20220411.01.00""")
         songs = list(tracks)
         not_found = list()
         for i, song in enumerate(songs):
-            query = song['artist'] + ' ' + song['name']
+            query = song['name'] + ' ' + song['artist']
             query = query.replace(" &", "")
             result = self.yt_music.search(query)
-            # print(result)
+
             if len(result) == 0:
                 not_found.append(query)
             else:
@@ -240,7 +240,7 @@ x-youtube-client-version: 1.20220411.01.00""")
 
                 duration_items = res['duration'].split(':')
                 duration = int(duration_items[0]) * 60 + int(duration_items[1])
-                duration_match = 1 - abs(duration - song['duration']) * 2 / song['duration']
+                duration_match = 1 - abs(duration - float(song['duration'])) * 2 / float(song['duration'])
 
                 title = res['title']
                 if res['resultType'] == 'video':
