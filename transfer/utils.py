@@ -5,7 +5,6 @@ import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from ytmusicapi import YTMusic
-import spotipy.util as util
 
 from transfer.vars import client_id, redirect_uri, client_secret
 
@@ -31,11 +30,14 @@ class Spotify:
         results = []
         for track in tracks['items']:
             if track['track'] is not None:
+                duration = track["track"]["duration_ms"]
+                minutes = int((duration / 1000) // 60)
+                sec = int(duration / 1000 - 60 * minutes)
                 results.append({
                     'artist': ' '.join([artist['name'] for artist in track['track']['artists']]),
                     'name': track['track']['name'],
                     'album': track['track']['album']['name'],
-                    'duration': track['track']['duration_ms'] / 1000
+                    'duration': f'{minutes}:{sec}'
                 })
 
         return results
@@ -239,8 +241,10 @@ x-youtube-client-version: 1.20220411.01.00""")
                     continue
 
                 duration_items = res['duration'].split(':')
+                spotify_duration_items = song['duration'].split(':')
                 duration = int(duration_items[0]) * 60 + int(duration_items[1])
-                duration_match = 1 - abs(duration - float(song['duration'])) * 2 / float(song['duration'])
+                spotify_duration = int(spotify_duration_items[0]) * 60 + int(spotify_duration_items[1])
+                duration_match = 1 - abs(duration - spotify_duration) * 2 / spotify_duration
 
                 title = res['title']
                 if res['resultType'] == 'video':

@@ -23,7 +23,7 @@
                     <div class="arrow">
                         <img src="/media/arrow-right.svg" alt="" class="arrow">
                     </div>
-                    <a class="service__item active-service youtube">
+                    <a class="service__item active-service youtube" href="{% url 'youtube_login' %}">
                         <img src="/media/youtube.svg" alt="" class="service-logo">
                     </a>
                 </div>
@@ -61,7 +61,11 @@
                 {% endfor %}
             </div>
             {% csrf_token %}
-            <button class="main__button">Перенести треки (24)</button>
+            {% if yt_auth %}
+                <button class="main__button">Перенести треки (24)</button>
+            {% else %}
+                <div>Войдите в ютуб</div>
+            {% endif %}
 
 
         {% else %}
