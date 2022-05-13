@@ -9,5 +9,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('spotify-login/', spotify_login, name='spotify_login'),
     path('youtube-login/', youtube_login, name='youtube_login'),
-    path('transfer/', transfer_playlist, name='transfer_playlist')
+    path('transfer/', transfer_playlist, name='transfer_playlist'),
+    path('get-songs/', get_songs, name='get_songs')
 ]

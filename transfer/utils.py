@@ -1,11 +1,11 @@
 import difflib
 import html
 import os
-import time
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from ytmusicapi import YTMusic
+import spotipy.util as util
 
 from transfer.vars import client_id, redirect_uri, client_secret
 
@@ -19,7 +19,13 @@ class Spotify:
         self.client_secret = client_secret
         self.client_id = client_id
         self.redirect_uri = redirect_uri
-        self.sp, self.username = self.authorisation()
+        self.sp, self.username, self.token = None, None, None
+
+    def auth(self):
+        self.sp, self.username, self.token = self.authorisation()
+
+    def auth_with_token(self, username, token):
+        self.sp, self.username, self.token = self.authorisation_with_token(username, token)
 
     def build_results(self, tracks):
         results = []
@@ -62,7 +68,7 @@ class Spotify:
         :return:
         """
         # playlist = {'playlist_name': [{'track_name': 'name', 'artist_name': 'name'}, {...}, ]
-        playlist_name = 'teeeest2'  # self.sp.playlist(playlist_id=playlist_id)['name']
+        playlist_name = self.sp.playlist(playlist_id=playlist_id)['name']
         quantity = self.sp.playlist_items(playlist_id=playlist_id)['total']
         tracks = {playlist_name: []}
 
@@ -91,15 +97,8 @@ class Spotify:
             user = self.username
 
         pl = self.sp.user_playlists(user)['items']
-        count = 1
-        more = len(pl) == 50
-        while more:
-            results = self.sp.user_playlists(user, offset=count * 50)['items']
-            pl.extend(results)
-            more = len(results) == 50
-            count = count + 1
 
-        return [p for p in pl if p['owner']['display_name'] == user and p['tracks']['total'] > 0]
+        return pl
 
     def get_track_id(self, query):
         track_id = self.sp.search(q=query, limit=1, type='track')
@@ -115,41 +114,37 @@ class Spotify:
         token = sp_oauth.get_access_token(code, as_dict=False)
 
         sp = spotipy.Spotify(auth=token)
+        print(sp.current_user())
         username = sp.current_user()['id']
+        print(username)
 
-        return sp, username
+        return sp, username, token
+
+    def authorisation_with_token(self, username, token):
+        sp = spotipy.Spotify(auth=token)
+        username = username
+
+        return sp, username, token
 
     def transfer_playlists(self, playlist):
-        # Название плейлиста
         playlist_name = list(playlist.keys())[0]
-        # Создание плейлиста в спотифае
         create_spotify_playlist = self.sp.user_playlist_create(self.username, playlist_name)
-        # Id созданного плейлиста
+
         new_spotify_playlist_id = create_spotify_playlist['id']
-        # Число треков в плейлисте
         number_of_tracks = range(len(playlist[playlist_name]))
         tracks = []
         banned_tracks = []
 
-        start_time = time.time()
-
         query = ''
         for i in number_of_tracks:
             try:
-                artist_name = playlist[playlist_name][i]['artist_name']
-                track_name = playlist[playlist_name][i]['track_name']
+                artist_name = playlist[playlist_name][i]['artist']
+                track_name = playlist[playlist_name][i]['name']
                 query = ' '.join([artist_name, track_name])
                 tracks += (self.get_track_id(query))
                 print(query)
             except IndexError:
                 banned_tracks.append(query)
-
-        print(f'Время поиска id треков: {time.time() - start_time}')
-
-        print(tracks)
-        print(f"Недобавленные треки: {banned_tracks}")
-
-        start_time = time.time()
 
         tracks_number = len(tracks)
         if tracks_number <= 100:
@@ -165,8 +160,6 @@ class Spotify:
 
         # for i in range(len(tracks)):
         #     self.sp.playlist_add_items(playlist_id=new_spotify_playlist_id, items=tracks[i])
-
-        print(f'Время добавления треков в плейлист: {time.time() - start_time}')
 
 
 class YoutubeMusic:
@@ -188,7 +181,7 @@ class YoutubeMusic:
             raise Exception("Playlist title not found in playlists")
 
     def setup(self):
-        yt_music = YTMusic().setup(filepath='headers_auth.json', headers_raw="""accept: */*
+        self.yt_music = YTMusic().setup(filepath='headers_auth.json', headers_raw="""accept: */*
 accept-encoding: gzip, deflate, br
 accept-language: ru,en;q=0.9,en-GB;q=0.8,en-US;q=0.7
 authorization: SAPISIDHASH 1649916342_13c00b7203887059e1642c058983171432f310f9
@@ -250,7 +243,6 @@ x-youtube-client-version: 1.20220411.01.00""")
                 duration_match = 1 - abs(duration - song['duration']) * 2 / song['duration']
 
                 title = res['title']
-                # for videos,
                 if res['resultType'] == 'video':
                     title_split = title.split('-')
                     if len(title_split) == 2:
@@ -262,20 +254,40 @@ x-youtube-client-version: 1.20220411.01.00""")
                           difflib.SequenceMatcher(a=res['artists'][0]['name'].lower(),
                                                   b=song['artist'].lower()).ratio()]
 
-                # add album for songs only
                 if res['resultType'] == 'song' and 'album' in res:
                     scores.append(
                         difflib.SequenceMatcher(a=res['album']['name'].lower(), b=song['album'].lower()).ratio())
 
-                match_score[res['videoId']] = sum(scores) / (len(scores) + 1) * max(1,
-                                                                                    int(res[
-                                                                                            'resultType'] == 'song') * 1.5)
+                match_score[res['videoId']] = sum(scores) / (len(scores) + 1) * \
+                                              max(1, int(res['resultType'] == 'song') * 1.5)
             except:
                 print(f'Ошибка {res}')
 
         if len(match_score) == 0:
             return None
 
-        # don't return songs with titles <45% match
         max_score = max(match_score, key=match_score.get)
         return max_score
+
+    def playlist_to_transfer(self, playlist):
+        playlist = self.yt_music.get_playlist(playlist)
+        tracks = playlist['tracks']
+        print(tracks)
+
+        tracks_to_transfer = {playlist['title']: []}
+        for i in range(playlist['trackCount']):
+            if tracks[i] is not None:
+                name = tracks[i]['title']
+                artist = tracks[i]['artists'][0]['name']
+                if tracks[i]['album'] is not None:
+                    album = tracks[i]['album']['name']
+                duration = tracks[i]['duration']
+
+                tracks_to_transfer[playlist['title']].append(
+                    {'name': name,
+                     'artist': artist,
+                     'album': album,
+                     'duration': duration}
+                )
+
+        return tracks_to_transfer
