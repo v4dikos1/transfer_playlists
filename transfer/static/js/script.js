@@ -57,14 +57,10 @@ main_button.addEventListener('click', () => {
 });
 
 first_checkbox.addEventListener('click', () => {
+    tracks = []
     if (first_checkbox.checked) {
         list_checkboxes.forEach(item => {
             item.checked = true;
-            add_track_in_list(item);
-        });
-    } else {
-        list_checkboxes.forEach(item => {
-            item.checked = false;
             add_track_in_list(item);
         });
     }
