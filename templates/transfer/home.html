@@ -1,10 +1,65 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="container">
+            <div class="header__row">
+                <p class="logo">Link.Audio</p>
+                <div class="linked__services">
+                    <a class="service__item active-service spotify" href="{% url 'spotify_login' %}">
+                        <img src="/media/spotify.svg" alt="" class="service-logo">
+                    </a>
+                    <div class="arrow">
+                        <img src="/media/arrow-right.svg" alt="" class="arrow">
+                    </div>
+                    <a class="service__item active-service youtube">
+                        <img src="/media/youtube.svg" alt="" class="service-logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        {% if auth %}
+            <div class="container">
+                <div class="playlists">
+                    {% for playlist in playlists %}
+                        <label class="playlist-item" id="{{ playlist.id }}">
+                            <input type="radio" class="radio__input" name="radio__input">
+                            <span class="radio"></span>
+                            <img class="image" src="{{ playlist.img }}" alt="">
+                            <p class="text">{{ playlist.name }}</p>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="before-login">
+                <div class="content">
+                    <img src="/media/nothing.svg" alt="">
+                    <p class="text">Пока здесь ничего нет. Войдите в аккаунты Spotify и YouTube,
+                        чтобы увидеть доступные треки для переноса</p>
+                </div>
+            </div>
+        {% endif %}
+        {% csrf_token %}
+        <button class="send__playlist">Выбрать плейлист</button>
+        
+    </main>
+</div>
 
-
-{% block title %}
-    {{ title }}
-{% endblock %}
-
-{% block content %}
-    <a class="navbar-brand" href="{% url 'login' %}">Приступить к переносу</a>
-{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/static/js/script.js"></script>
+</body>
+</html>
