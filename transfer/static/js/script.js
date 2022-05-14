@@ -59,7 +59,7 @@ if (main_button != null) {
             url: url,
             success: function (response) {
                 alert('Перенос выполнен');
-                window.location.href = ''
+                window.location.href = '';
             },
             error: function (response) {
                 console.log('Неудача');
