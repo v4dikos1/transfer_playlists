@@ -1,11 +1,9 @@
 import json
 
-from django.db.models.functions import window
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView
 
 from users.models import CustomUser
 from .utils import Spotify, YoutubeMusic
@@ -74,6 +72,24 @@ class TracksView(View):
 
         return result
 
+    def post(self, request, **kwargs):
+        playlist = json.loads(request.POST.get('stringJSON'))
+        playlist_id = self.kwargs['playlist_id']
+
+        spotify = Spotify()
+        yt = YoutubeMusic()
+
+        username, token = get_spotify_user()
+        spotify.auth_with_token(username, token)
+
+        if spotify is not None:
+            tracks = yt.search_songs(playlist)
+            yt_playlist_id = yt.create_playlist('Transfer', 'Transfer from Spotify', 'PUBLIC')
+            yt.add_playlist_items(yt_playlist_id, tracks)
+
+        return JsonResponse({'data': playlist}, status=200)
+
+
 
 def transfer_playlist(request):
     spotify = Spotify()
@@ -98,7 +114,11 @@ def get_playlists(request):
     if request.method == 'POST':
         playlist = request.POST.get('stringJSON')
 
-        return HttpResponseRedirect(reverse_lazy('songs', kwargs={'playlist_id': playlist}), status=200)
+        response = {'status': 1, 'message': 'OK', 'url': '/songs/'+playlist+'/'}
+
+        return HttpResponse(json.dumps(response), content_type='application/json')
+
+        # return HttpResponseRedirect(reverse_lazy('songs', kwargs={'playlist_id': playlist}), status=200)
 
 
 def get_songs(request):

@@ -244,18 +244,18 @@ p {
     width: 100%;
     height: 100%;
 }
-.default:after {
-	content: "";
-	display: block;    
-	width: 100%;
-	height: 100%;    
-	position: absolute;
-	top: 0;      
-	left: 0;   
-	background: transparent;
-	background-color: #0C2541;
-	opacity: 0.65;
-}
+/*.default:after {*/
+/*	content: "";*/
+/*	display: block;    */
+/*	width: 100%;*/
+/*	height: 100%;    */
+/*	position: absolute;*/
+/*	top: 0;      */
+/*	left: 0;   */
+/*	background: transparent;*/
+/*	background-color: #0C2541;*/
+/*	opacity: 0.65;*/
+/*}*/
 
 .playlist-item p {
     text-align: center;
