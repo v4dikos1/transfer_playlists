@@ -33,6 +33,10 @@ class Spotify:
                 duration = track["track"]["duration_ms"]
                 minutes = int((duration / 1000) // 60)
                 sec = int(duration / 1000 - 60 * minutes)
+
+                if sec < 10:
+                    sec = str(f'0{sec}')
+
                 results.append({
                     'artist': ' '.join([artist['name'] for artist in track['track']['artists']]),
                     'name': track['track']['name'],

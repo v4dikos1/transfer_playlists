@@ -90,7 +90,6 @@ class TracksView(View):
         return JsonResponse({'data': playlist}, status=200)
 
 
-
 def transfer_playlist(request):
     spotify = Spotify()
     yt = YoutubeMusic()

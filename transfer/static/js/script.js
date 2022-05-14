@@ -59,7 +59,7 @@ if (main_button != null) {
             url: url,
             success: function (response) {
                 alert('Перенос выполнен');
-                window.location.href = '';
+                // window.location.href = '/get-playlists/';
             },
             error: function (response) {
                 console.log('Неудача');
@@ -82,7 +82,7 @@ if (first_checkbox != null) {
                 add_track_in_list(item);
             });
         }
-        main_button.textContent = `Выбрать треки (${tracks.length})`
+
     });
 
     function add_track_in_list(item) {
@@ -104,6 +104,8 @@ if (first_checkbox != null) {
             tracks.splice(index, 1);
             console.log(tracks);
         }
+
+        main_button.textContent = `Выбрать треки (${tracks.length})`
     }
 
     list_checkboxes.forEach(item => {
