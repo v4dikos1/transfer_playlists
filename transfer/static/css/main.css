@@ -6,6 +6,7 @@ body {
     padding: 0;
     margin: 0;
 }
+
 p {
     padding: 0;
     margin: 0;
@@ -97,12 +98,14 @@ p {
 .track__row.success {
     background-color: #04241E;
 }
+
 .labels, .track {
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .track:hover, .track__row:hover {
     cursor: pointer;
     transition: 0.2s ease;
@@ -111,14 +114,16 @@ p {
 .track__row:hover {
     background-color: #06172b;
 }
+
 .track__row.error:hover {
     background-color: #350819;
 }
+
 .track__row.success:hover {
     background-color: #062e27;
 }
 
-.label.name, .label.author, .track.name, .track.author  {
+.label.name, .label.author, .track.name, .track.author {
     flex: 3 150px;
 }
 
@@ -132,7 +137,7 @@ p {
     flex: 2 125px;
 }
 
-.labels p{
+.labels p {
     text-transform: uppercase;
     color: #6382A5;
     font-size: 14px;
@@ -151,6 +156,7 @@ p {
     clip: rect(0 0 0 0);
     overflow: hidden;
 }
+
 .checkbox {
     transition: border-color 0.2s ease;
     cursor: pointer;
@@ -183,13 +189,15 @@ p {
     border-color: #5D7CA0;
     background-color: #062e27;
 }
+
 .checkbox__input:checked + .checkbox {
     background-color: #07192E;
     background: url(/media/tick.svg) center no-repeat;
 }
+
 /* checkbox */
 
-.main__button{
+.main__button, .send__playlist, .login__youtube {
     font: inherit;
     height: 60px;
     width: 100vw;
@@ -203,18 +211,25 @@ p {
     transition: ease 0.15s;
 }
 
-.main__button:hover {
+.login__youtube {
+    text-decoration: NONE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main__button:hover, .send__playlist:hover, .login__youtube:hover {
     background-color: #222b7a;
     cursor: pointer;
 }
 
-.content{
+.content {
     margin: auto;
     text-align: center;
     width: 400px;
 }
 
-.content p{
+.content p {
     margin-top: 25px;
     font-weight: 200;
     line-height: 28px;
@@ -224,26 +239,31 @@ p {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-bottom: 100px;
 }
 
 .playlist-item {
+    width: 250px;
     margin-top: 20px;
     position: relative;
     cursor: pointer;
 }
+
 .image {
     display: inline-block;
-	position: relative;    
-	line-height: 0;
-    width: 280px;
-    height: 280px;
+    position: relative;
+    line-height: 0;
+    width: 250px;
+    height: 250px;
     border-radius: 20px;
     overflow: hidden;
 }
+
 .image img {
     width: 100%;
     height: 100%;
 }
+
 /*.default:after {*/
 /*	content: "";*/
 /*	display: block;    */
@@ -261,11 +281,13 @@ p {
     text-align: center;
     margin-top: 16px;
 }
+
 .radio__input, .radio {
     position: absolute;
     right: 16px;
     top: 16px;
 }
+
 .radio {
     transition: border-color 0.2s ease;
     cursor: pointer;
@@ -274,9 +296,11 @@ p {
     border-radius: 50%;
     border: 0.13em solid #a3dab6;
 }
+
 .radio__input:hover + .radio {
     border-color: #a3dab6;
 }
+
 .radio__input:checked + .radio {
     background: url(/media/tick.svg) center no-repeat;
 }

@@ -21,7 +21,6 @@ if (list_radio != null) {
 }
 
 if (send_playlist != null) {
-
     send_playlist.addEventListener('click', () => {
         let csrf = $("input[name=csrfmiddlewaretoken]").val();
         console.log('test')
@@ -32,11 +31,10 @@ if (send_playlist != null) {
             type: 'POST',
             url: '/get-playlists/',
             success: function(response) {
-                alert('Удача')
                 window.location.href = response.url;
             },
             error: function(response) {
-                alert('Неудача');
+                console.log('Неудача');
             }
         });
     });
@@ -44,11 +42,11 @@ if (send_playlist != null) {
 
 if (main_button != null) {
     main_button.addEventListener('click', () => {
-        stringJSON = JSON.stringify(tracks);
+        let stringJSON = JSON.stringify(tracks);
+
         let csrf = $("input[name=csrfmiddlewaretoken]").val();
-        alert('test2');
         let url = document.location.search;
-        alert(url);
+
         $.ajax({
             data: {
                 stringJSON: stringJSON,
@@ -58,10 +56,10 @@ if (main_button != null) {
             type: 'POST',
             url: url,
             success: function (response) {
-                alert('Успех');
+                console.log('Успех');
             },
             error: function (response) {
-                alert('Неудача');
+                console.log('Неудача');
             }
         });
     });
@@ -76,8 +74,7 @@ if (first_checkbox != null) {
                 add_track_in_list(item);
             });
         }
-        count = tracks.length;
-        main_button.textContent = 'Выбрать треки (count)'
+        main_button.textContent = `Выбрать треки (${tracks.length})`
     });
 
     function add_track_in_list(item) {

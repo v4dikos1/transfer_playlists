@@ -114,7 +114,7 @@ def get_playlists(request):
     if request.method == 'POST':
         playlist = request.POST.get('stringJSON')
 
-        response = {'status': 1, 'message': 'OK', 'url': '/songs/'+playlist+'/'}
+        response = {'status': 1, 'message': 'OK', 'url': '/songs/' + playlist + '/'}
 
         return HttpResponse(json.dumps(response), content_type='application/json')
 
