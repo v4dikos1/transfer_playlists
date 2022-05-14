@@ -26,14 +26,16 @@ if (send_playlist != null) {
         console.log('test')
 
         $.ajax({
-            data: {stringJSON: playlist,
-                    csrfmiddlewaretoken: csrf},
+            data: {
+                stringJSON: playlist,
+                csrfmiddlewaretoken: csrf
+            },
             type: 'POST',
             url: '/get-playlists/',
-            success: function(response) {
+            success: function (response) {
                 window.location.href = response.url;
             },
-            error: function(response) {
+            error: function (response) {
                 console.log('Неудача');
             }
         });
@@ -46,7 +48,7 @@ if (main_button != null) {
 
         let csrf = $("input[name=csrfmiddlewaretoken]").val();
         let url = document.location.search;
-
+        alert('Перенос запущен');
         $.ajax({
             data: {
                 stringJSON: stringJSON,
@@ -56,7 +58,8 @@ if (main_button != null) {
             type: 'POST',
             url: url,
             success: function (response) {
-                console.log('Успех');
+                alert('Перенос выполнен');
+                window.location.href = ''
             },
             error: function (response) {
                 console.log('Неудача');
@@ -71,6 +74,11 @@ if (first_checkbox != null) {
         if (first_checkbox.checked) {
             list_checkboxes.forEach(item => {
                 item.checked = true;
+                add_track_in_list(item);
+            });
+        } else {
+            list_checkboxes.forEach(item => {
+                item.checked = false;
                 add_track_in_list(item);
             });
         }
