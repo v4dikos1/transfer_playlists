@@ -100,7 +100,7 @@ if (first_checkbox != null) {
             tracks.push(track);
             console.log(tracks);
         } else {
-            index = tracks.indexOf(tracks.filter(item => item.name == track.name));
+            index = tracks.indexOf(tracks.filter(item => item.name === track.name));
             tracks.splice(index, 1);
             console.log(tracks);
         }
